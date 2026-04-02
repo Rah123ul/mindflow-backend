@@ -331,7 +331,7 @@ io.on('connection', (socket) => {
   });
 
   // REAL-TIME METRICS SYNC
-  socket.on('trace:push', ({ joinCode, redSignal, greenSignal, blueSignal, fps }) => {
+  socket.on('trace:push', ({ joinCode, redSignal, greenSignal, blueSignal, fps, overallScore }) => {
     const data = socketData.get(socket.id);
     if (!data) return;
 
@@ -342,7 +342,8 @@ io.on('connection', (socket) => {
     if (room) {
       const p = room.participants.find(part => part.id === socket.id);
       if (p) {
-        p.score = analysis.meditationIndex;
+        // Use the aggregated overallScore from the frontend, fallback to raw index
+        p.score = overallScore !== undefined ? overallScore : analysis.meditationIndex;
         p.stress = analysis.stressState;
         
         // Broadcast leaderboard update to room

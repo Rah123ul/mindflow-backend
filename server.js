@@ -16,10 +16,7 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
 
-// ============================================
-// SERVE STATIC FRONTEND FILES
-// ============================================
-app.use(express.static(path.join(__dirname, '..', 'medico')));
+// Static frontend is handled by Github Pages now
 
 // ============================================
 // API KEY MIDDLEWARE
@@ -382,7 +379,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'medico', 'index.html'));
+  res.send('MindFlow Backend is Running');
 });
 
 const PORT = process.env.PORT || 3000;
